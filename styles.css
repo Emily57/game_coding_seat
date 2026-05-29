@@ -1,0 +1,329 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Hiragino Kaku Gothic ProN", "Yu Gothic", sans-serif;
+  background: #f5f5f5;
+  color: #333;
+  min-height: 100vh;
+}
+
+header {
+  background: #2d2d2d;
+  color: #fff;
+  padding: 16px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+header h1 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  flex: 1;
+}
+
+.open-area {
+  margin: 80px auto;
+  max-width: 480px;
+  text-align: center;
+}
+
+.open-area p {
+  color: #888;
+  margin-bottom: 24px;
+  font-size: 0.95rem;
+  line-height: 1.7;
+}
+
+.toolbar {
+  width: 100%;
+  margin: 16px auto 8px;
+  padding: 0 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  box-sizing: border-box;
+}
+
+.btn {
+  padding: 7px 18px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  font-size: 0.88rem;
+  transition: background 0.2s;
+}
+
+.btn-add {
+  background: #4caf50;
+  color: #fff;
+}
+
+.btn-add:hover {
+  background: #388e3c;
+}
+
+.btn-convert {
+  background: #607d8b;
+  color: #fff;
+}
+
+.btn-convert:hover {
+  background: #455a64;
+}
+
+.btn-export {
+  background: #8d6e63;
+  color: #fff;
+}
+
+.btn-export:hover {
+  background: #6d4c41;
+}
+
+.btn-clear {
+  background: #e57373;
+  color: #fff;
+}
+
+.btn-clear:hover {
+  background: #c62828;
+}
+
+.btn-save {
+  background: #5b9bd5;
+  color: #fff;
+}
+
+.btn-save:hover {
+  background: #2e6da4;
+}
+
+.table-wrapper {
+  width: 100%;
+  margin: 0 auto 40px;
+  padding: 0 16px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #fff;
+  border-radius: 2px;
+  overflow: hidden;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+thead th {
+  background: #2d2d2d;
+  color: #fff;
+  padding: 6px;
+  text-align: left;
+  font-size: 0.88rem;
+  font-weight: 600;
+}
+
+thead th:not(:last-child) {
+  border-right: 1px solid rgba(255, 255, 255, 0.14);
+}
+
+tbody tr {
+  border-bottom: 1px solid #eee;
+}
+
+tbody tr:last-child {
+  border-bottom: none;
+}
+
+tbody tr:hover {
+  background: #fafafa;
+}
+
+tbody td {
+  padding: 6px 8px;
+  vertical-align: top;
+}
+
+tbody td:not(:last-child) {
+  border-right: 1px solid #f0f0f0;
+}
+
+td:last-child {
+  width: 40px;
+  text-align: center;
+}
+
+.editable {
+  width: 100%;
+  border: 1px solid transparent;
+  padding: 6px 8px;
+  font-size: 0.95rem;
+  font-family: inherit;
+  background: transparent;
+  resize: none;
+  outline: none;
+  transition:
+    border-color 0.15s,
+    background 0.15s;
+  line-height: 1.5;
+  overflow: hidden;
+  min-height: calc(1.5em * 3 + 12px);
+}
+
+.editable:focus {
+  border-color: #5b9bd5;
+  background: #f0f6fd;
+}
+
+.col-name .editable {
+  width: 98px;
+}
+
+.bg-select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+}
+
+.bg-select:focus {
+  outline: none;
+  border-color: #5b9bd5;
+  box-shadow: 0 0 0 2px rgba(91, 155, 213, 0.12);
+}
+
+.code-select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+}
+
+.code-select:focus {
+  outline: none;
+  border-color: #5b9bd5;
+  box-shadow: 0 0 0 2px rgba(91, 155, 213, 0.12);
+}
+
+.bgm-select {
+  width: 100%;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+}
+
+.bgm-select:focus {
+  outline: none;
+  border-color: #5b9bd5;
+  box-shadow: 0 0 0 2px rgba(91, 155, 213, 0.12);
+}
+
+.line-count {
+  white-space: pre-line;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  color: #555;
+  font-size: 0.9rem;
+  text-align: right;
+}
+
+.line-count-over {
+  color: #d32f2f;
+  font-weight: 600;
+}
+
+#empty-hint {
+  text-align: center;
+  color: #aaa;
+  font-size: 0.9rem;
+  padding: 24px;
+}
+
+.output-wrapper {
+  margin-top: 16px;
+  background: #fff;
+  border: 1px solid #e9e9e9;
+  border-radius: 2px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+  padding: 10px;
+}
+
+.output-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+  color: #666;
+  margin-bottom: 8px;
+}
+
+.btn-copy {
+  background: #546e7a;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 6px 12px;
+}
+
+.btn-copy:hover {
+  background: #455a64;
+}
+
+.output-text {
+  width: 100%;
+  min-height: 220px;
+  resize: vertical;
+  border: 1px solid #ddd;
+  border-radius: 2px;
+  padding: 10px;
+  font-family:
+    ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono",
+    "Courier New", monospace;
+  font-size: 0.92rem;
+  line-height: 1.5;
+}
+
+.td-checkbox {
+  text-align: center;
+  vertical-align: middle;
+}
+
+input[type="checkbox"] {
+  cursor: pointer;
+  width: 18px;
+  height: 18px;
+  accent-color: #2d7bb5;
+  display: block;
+  margin: 0 auto;
+}
+
+.expression-char-select,
+.expression-select {
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 6px 8px;
+  font-size: 0.9rem;
+  background: #fff;
+  color: #333;
+  font-family: inherit;
+}
+
+.expression-char-select:focus,
+.expression-select:focus {
+  outline: none;
+  border-color: #5b9bd5;
+  box-shadow: 0 0 0 2px rgba(91, 155, 213, 0.12);
+}

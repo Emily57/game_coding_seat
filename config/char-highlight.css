@@ -1,0 +1,37 @@
+/* キャラクターごとのハイライトスタイル */
+/* char-highlight.js のマッピングと対応させてください */
+
+.char-highlight-sanada {
+  font-weight: bold !important;
+  color: #cc0000 !important; /* 赤 */
+}
+
+.char-highlight-mito {
+  font-weight: bold !important;
+  color: #d63384 !important; /* ピンク */
+}
+
+.char-highlight-ichigin {
+  font-weight: bold !important;
+  color: #0066cc !important; /* 青 */
+}
+
+.char-highlight-roga {
+  font-weight: bold !important;
+  color: #ffc938 !important;
+}
+
+.char-highlight-harakubo {
+  font-weight: bold !important;
+  color: #8800cc !important; /* 紫 */
+}
+
+.char-highlight-amari {
+  font-weight: bold !important;
+  color: #cc6600 !important; /* オレンジ */
+}
+
+.char-highlight-ringo {
+  font-weight: bold !important;
+  color: #ff427e !important; /* えんじ */
+}
