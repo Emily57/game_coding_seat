@@ -92,13 +92,13 @@ async function tryAutoLoad() {
       fileHandle = null;
       await deleteHandle("editcsv").catch(() => {});
       showOpenArea(
-        "edit/edit.csv が見つからないため、もう一度ファイルを選択してください。",
+        "edit.csv が見つからないため、もう一度ファイルを選択してください。",
       );
     }
   } else {
     fileHandle = handle;
     showOpenArea(
-      "edit/edit.csv への権限が必要です。\nボタンを押して許可してください。",
+      "edit.csv への権限が必要です。\nボタンを押して許可してください。",
     );
   }
 }

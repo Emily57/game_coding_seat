@@ -21,22 +21,31 @@
           "
         ></span>
         <span id="filename-label" style="font-size: 0.8rem; color: #aaa"
-          >edit/edit.csv</span
+          >edit.csv</span
         >
       </div>
     </header>
 
     <div id="open-area" class="open-area" style="display: none">
       <p id="open-msg">
-        edit/edit.csv への接続が切れました。<br />もう一度ファイルを選択してください。
+        edit.csv への接続が切れました。<br />もう一度ファイルを選択してください。
       </p>
       <button
         class="btn btn-save"
         id="open-btn"
         style="font-size: 1rem; padding: 12px 32px"
       >
-        edit/edit.csv を開く
+        edit.csv を開く
       </button>
+      <div style="margin-top: 10px">
+        <a
+          class="btn btn-export"
+          href="./sample.csv"
+          download="sample.csv"
+          style="display: inline-block; text-decoration: none"
+          >sample.csv をダウンロード</a
+        >
+      </div>
     </div>
 
     <div class="toolbar" id="toolbar" style="display: none">
