@@ -40,13 +40,18 @@ header h1 {
 }
 
 .toolbar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   width: 100%;
-  margin: 16px auto 8px;
-  padding: 0 16px;
+  margin: 0;
+  padding: 8px 16px;
   display: flex;
   justify-content: flex-end;
   gap: 10px;
   box-sizing: border-box;
+  background: #f0f0f0;
+  border-bottom: 1px solid #ddd;
 }
 
 .btn {
