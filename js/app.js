@@ -72,6 +72,12 @@ async function loadFromHandle() {
   openArea.style.display = "none";
   toolbar.style.display = "";
   tableWrapper.style.display = "";
+  requestAnimationFrame(function () {
+    document.documentElement.style.setProperty(
+      "--toolbar-h",
+      toolbar.offsetHeight + "px",
+    );
+  });
 }
 
 // ---- 起動時に自動読み込み ----
@@ -341,6 +347,16 @@ document
     }
     saveStatus.textContent = "修正対象なし";
   });
+
+// ---- ツールバー高さ追従 ----
+window.addEventListener("resize", function () {
+  if (toolbar.style.display !== "none") {
+    document.documentElement.style.setProperty(
+      "--toolbar-h",
+      toolbar.offsetHeight + "px",
+    );
+  }
+});
 
 // ---- 起動 ----
 tryAutoLoad();
