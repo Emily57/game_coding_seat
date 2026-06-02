@@ -309,6 +309,25 @@ document
       changed += 1;
     });
 
+    // 立ち絵キャラが選択済みでカテゴリが空なら normal を自動選択
+    rows.forEach((tr) => {
+      const charSelect = tr.querySelector("select.expression-char-select");
+      const catSelect = tr.querySelector("select.expression-category-select");
+      const exprSelect = tr.querySelector("select.expression-select");
+      if (!charSelect || !catSelect) return;
+      const selectedChar = charSelect.value.trim();
+      if (selectedChar && !catSelect.value) {
+        var categories = getExpressionCategories(selectedChar);
+        if (categories.includes("normal")) {
+          catSelect.value = "normal";
+          if (exprSelect) {
+            fillExpressionSelectOptions(exprSelect, selectedChar, "normal", "");
+          }
+          changed += 1;
+        }
+      }
+    });
+
     // 立ち絵人物が変わった行のreset/showをtrueに
     // 指定キャラは演出上の例外として自動付与対象から除外する
     const transitionIgnoreName =
