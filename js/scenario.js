@@ -29,87 +29,57 @@ function buildScenarioText() {
   const blocks = [];
 
   Array.from(tableBody.querySelectorAll("tr")).forEach((tr) => {
-    const codeSelect = tr.querySelector("select.code-select");
-    const checkboxes = tr.querySelectorAll("input[type='checkbox']");
-    const bgSelect = tr.querySelector("select.bg-select");
-    const bgmSelect = tr.querySelector("select.bgm-select");
-    const expressionCharSelect = tr.querySelector(
-      "select.expression-char-select",
-    );
-    const expressionCategorySelect = tr.querySelector(
-      "select.expression-category-select",
-    );
-    const expressionSelect = tr.querySelector("select.expression-select");
-    const textareas = tr.querySelectorAll("textarea");
-    if (textareas.length < 2) return;
-
-    const code = codeSelect ? codeSelect.value.trim() : "";
-    const isStart = checkboxes[0] ? checkboxes[0].checked : false;
-    const isReset = checkboxes[1] ? checkboxes[1].checked : false;
-    const isShow = checkboxes[2] ? checkboxes[2].checked : false;
-    const bg = bgSelect ? bgSelect.value.trim() : "";
-    const bgm = bgmSelect ? bgmSelect.value.trim() : "";
-    const expressionChar = expressionCharSelect
-      ? expressionCharSelect.value.trim()
-      : "";
-    const expressionCategory = expressionCategorySelect
-      ? expressionCategorySelect.value.trim()
-      : "";
-    const expressionSub = expressionSelect
-      ? expressionSelect.value.trim()
-      : "";
-    const expression =
-      expressionCategory && expressionSub
-        ? expressionCategory + "/" + expressionSub
-        : "";
-    const name = textareas[0].value.trim();
-    const dialogue = textareas[1].value.trim();
+    const d = readRowData(tr);
 
     if (
-      !code &&
-      !isStart &&
-      !isReset &&
-      !isShow &&
-      !bg &&
-      !bgm &&
-      !expressionChar &&
-      !expression &&
-      !name &&
-      !dialogue
+      !d.code &&
+      !d.start &&
+      !d.reset &&
+      !d.show &&
+      !d.bg &&
+      !d.bgm &&
+      !d.expressionChar &&
+      !d.expression &&
+      !d.name &&
+      !d.dialogue
     )
       return;
 
-    const speaker = resolveSpeakerWindow(name);
-    const commentLine = speaker.commentName ? `# ${speaker.commentName}\n` : "";
-    const windowLine = dialogue ? `[${speaker.windowId}]\n` : "";
-    const dialogueLine = dialogue ? formatDialogueText(dialogue) : "";
-    const resetLine = isReset ? "[chara_reset]\n" : "";
-    const codeLine = code ? `${code}\n` : "";
+    const speaker = resolveSpeakerWindow(d.name);
+    const commentLine = speaker.commentName
+      ? `# ${speaker.commentName}\n`
+      : "";
+    const windowLine = d.dialogue ? `[${speaker.windowId}]\n` : "";
+    const dialogueLine = d.dialogue ? formatDialogueText(d.dialogue) : "";
+    const resetLine = d.reset ? "[chara_reset]\n" : "";
+    const codeLine = d.code ? `${d.code}\n` : "";
 
     let expressionLine = "";
-    if (expressionChar && expression) {
-      const prefix = getCharacterExpressionPrefix(expressionChar);
+    if (d.expressionChar && d.expression) {
+      const prefix = getCharacterExpressionPrefix(d.expressionChar);
       if (prefix) {
-        const [base, face] = expression.split("/");
+        const [base, face] = d.expression.split("/");
         if (base && face) {
-          expressionLine = isShow
-            ? `[${prefix}_mod base="${base}" face="${expression}"][${prefix}_show]\n`
-            : `[${prefix}_mod base="${base}" face="${expression}"]\n`;
+          expressionLine = d.show
+            ? `[${prefix}_mod base="${base}" face="${d.expression}"][${prefix}_show]\n`
+            : `[${prefix}_mod base="${base}" face="${d.expression}"]\n`;
         }
       }
     }
 
-    if (isStart) {
-      const bgImage = bg || "black";
-      const bgmTrack = bgm || "mute";
+    if (d.start) {
+      const bgImage = d.bg || "black";
+      const bgmTrack = d.bgm || "mute";
       const startLine = `[start_scenario bgimage="background/${bgImage}.jpg" bgm="${bgmTrack}.ogg"]\n`;
       blocks.push(
         `${codeLine}${startLine}${resetLine}${expressionLine}${windowLine}${commentLine}${dialogueLine}`.trimEnd(),
       );
     } else {
-      const bgLine = bg ? `[bg storage="background/${bg}.jpg"]\n` : "";
-      const bgmLine = bgm
-        ? `[fadeinbgm storage="${bgm}.ogg" loop="true"]\n`
+      const bgLine = d.bg
+        ? `[bg storage="background/${d.bg}.jpg"]\n`
+        : "";
+      const bgmLine = d.bgm
+        ? `[fadeinbgm storage="${d.bgm}.ogg" loop="true"]\n`
         : "";
       blocks.push(
         `${codeLine}${bgLine}${bgmLine}${resetLine}${expressionLine}${windowLine}${commentLine}${dialogueLine}`.trimEnd(),
