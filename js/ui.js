@@ -156,36 +156,103 @@ function makeExpressionCharSelect(currentChar = "", defaultName = "") {
   return select;
 }
 
-function fillExpressionSelectOptions(
-  select,
-  charName = "",
-  currentExpression = "",
-) {
+// ---- カテゴリ（/の前の部分）ヘルパー ----
+
+function getExpressionCategories(charName) {
+  if (!charName) return [];
+  var prefix = getCharacterExpressionPrefix(charName);
+  if (!prefix) return [];
+  var expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
+  var seen = new Set();
+  var categories = [];
+  expressions.forEach(function (expr) {
+    var slashIdx = expr.indexOf("/");
+    if (slashIdx !== -1) {
+      var cat = expr.slice(0, slashIdx);
+      if (!seen.has(cat)) {
+        seen.add(cat);
+        categories.push(cat);
+      }
+    }
+  });
+  return categories;
+}
+
+function getSubExpressions(charName, category) {
+  if (!charName || !category) return [];
+  var prefix = getCharacterExpressionPrefix(charName);
+  if (!prefix) return [];
+  var expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
+  var catPrefix = category + "/";
+  var subs = [];
+  expressions.forEach(function (expr) {
+    if (expr.startsWith(catPrefix)) {
+      subs.push(expr.slice(catPrefix.length));
+    }
+  });
+  return subs;
+}
+
+function fillExpressionCategoryOptions(select, charName, currentCategory) {
   select.innerHTML = "";
-  const nullOption = document.createElement("option");
+  var nullOption = document.createElement("option");
   nullOption.value = "";
   nullOption.textContent = "";
   select.appendChild(nullOption);
 
-  if (!charName) return;
-  const prefix = getCharacterExpressionPrefix(charName);
-  if (!prefix) return;
+  getExpressionCategories(charName).forEach(function (cat) {
+    var option = document.createElement("option");
+    option.value = cat;
+    option.textContent = cat;
+    select.appendChild(option);
+  });
+  select.value = currentCategory || "";
+}
 
-  const expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
-  expressions.forEach((expr) => {
-    const option = document.createElement("option");
-    option.value = expr;
-    option.textContent = expr;
+function makeExpressionCategorySelect(charName, currentCategory) {
+  var select = document.createElement("select");
+  select.className = "expression-category-select";
+  select.style.width = "100%";
+  select.style.marginBottom = "4px";
+  fillExpressionCategoryOptions(select, charName, currentCategory || "");
+  return select;
+}
+
+// ---- 表情セレクト（/ 以降の部分） ----
+
+function fillExpressionSelectOptions(
+  select,
+  charName,
+  category,
+  currentExpression,
+) {
+  select.innerHTML = "";
+  var nullOption = document.createElement("option");
+  nullOption.value = "";
+  nullOption.textContent = "";
+  select.appendChild(nullOption);
+
+  if (!charName || !category) return;
+
+  getSubExpressions(charName, category).forEach(function (sub) {
+    var option = document.createElement("option");
+    option.value = sub;
+    option.textContent = sub;
     select.appendChild(option);
   });
   select.value = currentExpression || "";
 }
 
-function makeExpressionSelect(charName = "", currentExpression = "") {
-  const select = document.createElement("select");
+function makeExpressionSelect(charName, category, currentExpression) {
+  var select = document.createElement("select");
   select.className = "expression-select";
   select.style.width = "100%";
-  fillExpressionSelectOptions(select, charName, currentExpression);
+  fillExpressionSelectOptions(
+    select,
+    charName || "",
+    category || "",
+    currentExpression || "",
+  );
   return select;
 }
 
@@ -281,22 +348,59 @@ function addRow(
 
   const tdExpression = document.createElement("td");
   const effectiveExpressionChar = expressionChar || name;
+
+  var currentCategory = "";
+  var currentSubExpression = "";
+  if (expression) {
+    var slashIdx = expression.indexOf("/");
+    if (slashIdx !== -1) {
+      currentCategory = expression.slice(0, slashIdx);
+      currentSubExpression = expression.slice(slashIdx + 1);
+    } else {
+      currentCategory = expression;
+    }
+  }
+
   const expressionCharSelect = makeExpressionCharSelect(expressionChar, name);
+  const expressionCategorySelect = makeExpressionCategorySelect(
+    effectiveExpressionChar,
+    currentCategory,
+  );
   const expressionSelect = makeExpressionSelect(
     effectiveExpressionChar,
-    expression,
+    currentCategory,
+    currentSubExpression,
   );
 
   expressionCharSelect.addEventListener("change", () => {
     const selectedChar = expressionCharSelect.value;
-    fillExpressionSelectOptions(expressionSelect, selectedChar, "");
+    fillExpressionCategoryOptions(expressionCategorySelect, selectedChar, "");
+    var categories = getExpressionCategories(selectedChar);
+    if (categories.includes("normal")) {
+      expressionCategorySelect.value = "normal";
+    }
+    fillExpressionSelectOptions(
+      expressionSelect,
+      selectedChar,
+      expressionCategorySelect.value,
+      "",
+    );
     applyCharHighlight(expressionCharSelect, selectedChar);
+    scheduleAutoSave();
+  });
+  expressionCategorySelect.addEventListener("change", () => {
+    fillExpressionSelectOptions(
+      expressionSelect,
+      expressionCharSelect.value,
+      expressionCategorySelect.value,
+      "",
+    );
     scheduleAutoSave();
   });
   expressionSelect.addEventListener("change", () => scheduleAutoSave());
 
   tdExpression.appendChild(expressionCharSelect);
-  tdExpression.appendChild(document.createElement("br"));
+  tdExpression.appendChild(expressionCategorySelect);
   tdExpression.appendChild(expressionSelect);
 
   const tdName = document.createElement("td");

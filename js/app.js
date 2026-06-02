@@ -158,9 +158,21 @@ async function autoSave() {
     const expressionChar = expressionCharSelect
       ? window.CsvUtils.encodeInlineBreaks(expressionCharSelect.value.trim())
       : "";
-    const expression = expressionSelect
-      ? window.CsvUtils.encodeInlineBreaks(expressionSelect.value.trim())
+    const expressionCategorySelect = tr.querySelector(
+      "select.expression-category-select",
+    );
+    const expressionCategory = expressionCategorySelect
+      ? expressionCategorySelect.value.trim()
       : "";
+    const expressionSub = expressionSelect
+      ? expressionSelect.value.trim()
+      : "";
+    const expression =
+      expressionCategory && expressionSub
+        ? window.CsvUtils.encodeInlineBreaks(
+            expressionCategory + "/" + expressionSub,
+          )
+        : "";
     const name = window.CsvUtils.encodeInlineBreaks(textareas[0].value.trim());
     const dialogue = window.CsvUtils.encodeInlineBreaks(
       textareas[1].value.trim(),
@@ -295,6 +307,25 @@ document
       nameInput.value = normalized;
       autoResize(nameInput);
       changed += 1;
+    });
+
+    // 立ち絵キャラが選択済みでカテゴリが空なら normal を自動選択
+    rows.forEach((tr) => {
+      const charSelect = tr.querySelector("select.expression-char-select");
+      const catSelect = tr.querySelector("select.expression-category-select");
+      const exprSelect = tr.querySelector("select.expression-select");
+      if (!charSelect || !catSelect) return;
+      const selectedChar = charSelect.value.trim();
+      if (selectedChar && !catSelect.value) {
+        var categories = getExpressionCategories(selectedChar);
+        if (categories.includes("normal")) {
+          catSelect.value = "normal";
+          if (exprSelect) {
+            fillExpressionSelectOptions(exprSelect, selectedChar, "normal", "");
+          }
+          changed += 1;
+        }
+      }
     });
 
     // 立ち絵人物が変わった行のreset/showをtrueに

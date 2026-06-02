@@ -36,6 +36,9 @@ function buildScenarioText() {
     const expressionCharSelect = tr.querySelector(
       "select.expression-char-select",
     );
+    const expressionCategorySelect = tr.querySelector(
+      "select.expression-category-select",
+    );
     const expressionSelect = tr.querySelector("select.expression-select");
     const textareas = tr.querySelectorAll("textarea");
     if (textareas.length < 2) return;
@@ -49,7 +52,16 @@ function buildScenarioText() {
     const expressionChar = expressionCharSelect
       ? expressionCharSelect.value.trim()
       : "";
-    const expression = expressionSelect ? expressionSelect.value.trim() : "";
+    const expressionCategory = expressionCategorySelect
+      ? expressionCategorySelect.value.trim()
+      : "";
+    const expressionSub = expressionSelect
+      ? expressionSelect.value.trim()
+      : "";
+    const expression =
+      expressionCategory && expressionSub
+        ? expressionCategory + "/" + expressionSub
+        : "";
     const name = textareas[0].value.trim();
     const dialogue = textareas[1].value.trim();
 

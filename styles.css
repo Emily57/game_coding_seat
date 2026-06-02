@@ -318,6 +318,7 @@ input[type="checkbox"] {
 }
 
 .expression-char-select,
+.expression-category-select,
 .expression-select {
   border: 1px solid #ddd;
   border-radius: 6px;
@@ -329,6 +330,7 @@ input[type="checkbox"] {
 }
 
 .expression-char-select:focus,
+.expression-category-select:focus,
 .expression-select:focus {
   outline: none;
   border-color: #5b9bd5;
