@@ -158,9 +158,21 @@ async function autoSave() {
     const expressionChar = expressionCharSelect
       ? window.CsvUtils.encodeInlineBreaks(expressionCharSelect.value.trim())
       : "";
-    const expression = expressionSelect
-      ? window.CsvUtils.encodeInlineBreaks(expressionSelect.value.trim())
+    const expressionCategorySelect = tr.querySelector(
+      "select.expression-category-select",
+    );
+    const expressionCategory = expressionCategorySelect
+      ? expressionCategorySelect.value.trim()
       : "";
+    const expressionSub = expressionSelect
+      ? expressionSelect.value.trim()
+      : "";
+    const expression =
+      expressionCategory && expressionSub
+        ? window.CsvUtils.encodeInlineBreaks(
+            expressionCategory + "/" + expressionSub,
+          )
+        : "";
     const name = window.CsvUtils.encodeInlineBreaks(textareas[0].value.trim());
     const dialogue = window.CsvUtils.encodeInlineBreaks(
       textareas[1].value.trim(),
