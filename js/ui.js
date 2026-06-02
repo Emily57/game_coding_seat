@@ -160,15 +160,15 @@ function makeExpressionCharSelect(currentChar = "", defaultName = "") {
 
 function getExpressionCategories(charName) {
   if (!charName) return [];
-  var prefix = getCharacterExpressionPrefix(charName);
+  const prefix = getCharacterExpressionPrefix(charName);
   if (!prefix) return [];
-  var expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
-  var seen = new Set();
-  var categories = [];
-  expressions.forEach(function (expr) {
-    var slashIdx = expr.indexOf("/");
+  const expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
+  const seen = new Set();
+  const categories = [];
+  expressions.forEach((expr) => {
+    const slashIdx = expr.indexOf("/");
     if (slashIdx !== -1) {
-      var cat = expr.slice(0, slashIdx);
+      const cat = expr.slice(0, slashIdx);
       if (!seen.has(cat)) {
         seen.add(cat);
         categories.push(cat);
@@ -180,12 +180,12 @@ function getExpressionCategories(charName) {
 
 function getSubExpressions(charName, category) {
   if (!charName || !category) return [];
-  var prefix = getCharacterExpressionPrefix(charName);
+  const prefix = getCharacterExpressionPrefix(charName);
   if (!prefix) return [];
-  var expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
-  var catPrefix = category + "/";
-  var subs = [];
-  expressions.forEach(function (expr) {
+  const expressions = window.AppConfig.getExpressionsMap()[prefix] || [];
+  const catPrefix = category + "/";
+  const subs = [];
+  expressions.forEach((expr) => {
     if (expr.startsWith(catPrefix)) {
       subs.push(expr.slice(catPrefix.length));
     }
@@ -195,13 +195,13 @@ function getSubExpressions(charName, category) {
 
 function fillExpressionCategoryOptions(select, charName, currentCategory) {
   select.innerHTML = "";
-  var nullOption = document.createElement("option");
+  const nullOption = document.createElement("option");
   nullOption.value = "";
   nullOption.textContent = "";
   select.appendChild(nullOption);
 
-  getExpressionCategories(charName).forEach(function (cat) {
-    var option = document.createElement("option");
+  getExpressionCategories(charName).forEach((cat) => {
+    const option = document.createElement("option");
     option.value = cat;
     option.textContent = cat;
     select.appendChild(option);
@@ -210,7 +210,7 @@ function fillExpressionCategoryOptions(select, charName, currentCategory) {
 }
 
 function makeExpressionCategorySelect(charName, currentCategory) {
-  var select = document.createElement("select");
+  const select = document.createElement("select");
   select.className = "expression-category-select";
   select.style.width = "100%";
   select.style.marginBottom = "4px";
@@ -227,15 +227,15 @@ function fillExpressionSelectOptions(
   currentExpression,
 ) {
   select.innerHTML = "";
-  var nullOption = document.createElement("option");
+  const nullOption = document.createElement("option");
   nullOption.value = "";
   nullOption.textContent = "";
   select.appendChild(nullOption);
 
   if (!charName || !category) return;
 
-  getSubExpressions(charName, category).forEach(function (sub) {
-    var option = document.createElement("option");
+  getSubExpressions(charName, category).forEach((sub) => {
+    const option = document.createElement("option");
     option.value = sub;
     option.textContent = sub;
     select.appendChild(option);
@@ -244,7 +244,7 @@ function fillExpressionSelectOptions(
 }
 
 function makeExpressionSelect(charName, category, currentExpression) {
-  var select = document.createElement("select");
+  const select = document.createElement("select");
   select.className = "expression-select";
   select.style.width = "100%";
   fillExpressionSelectOptions(
@@ -293,11 +293,84 @@ function renderLineCounts(target, text) {
   });
 }
 
-// ---- テーブル ----
+// ---- テーブル部品 ----
 
 function updateEmptyHint() {
   emptyHint.style.display = tableBody.children.length === 0 ? "" : "none";
 }
+
+function makeTdCheckbox(checked) {
+  const td = document.createElement("td");
+  td.className = "td-checkbox";
+  const cb = document.createElement("input");
+  cb.type = "checkbox";
+  cb.checked = checked === true || checked === "true";
+  cb.addEventListener("change", () => scheduleAutoSave());
+  td.appendChild(cb);
+  return td;
+}
+
+function makeTdExpression(expressionChar, expression, name) {
+  const td = document.createElement("td");
+  const effectiveChar = expressionChar || name;
+
+  let currentCategory = "";
+  let currentSub = "";
+  if (expression) {
+    const slashIdx = expression.indexOf("/");
+    if (slashIdx !== -1) {
+      currentCategory = expression.slice(0, slashIdx);
+      currentSub = expression.slice(slashIdx + 1);
+    } else {
+      currentCategory = expression;
+    }
+  }
+
+  const charSelect = makeExpressionCharSelect(expressionChar, name);
+  const categorySelect = makeExpressionCategorySelect(
+    effectiveChar,
+    currentCategory,
+  );
+  const exprSelect = makeExpressionSelect(
+    effectiveChar,
+    currentCategory,
+    currentSub,
+  );
+
+  charSelect.addEventListener("change", () => {
+    const selected = charSelect.value;
+    fillExpressionCategoryOptions(categorySelect, selected, "");
+    const categories = getExpressionCategories(selected);
+    if (categories.includes("normal")) {
+      categorySelect.value = "normal";
+    }
+    fillExpressionSelectOptions(
+      exprSelect,
+      selected,
+      categorySelect.value,
+      "",
+    );
+    applyCharHighlight(charSelect, selected);
+    scheduleAutoSave();
+  });
+  categorySelect.addEventListener("change", () => {
+    fillExpressionSelectOptions(
+      exprSelect,
+      charSelect.value,
+      categorySelect.value,
+      "",
+    );
+    scheduleAutoSave();
+  });
+  exprSelect.addEventListener("change", () => scheduleAutoSave());
+
+  td.appendChild(charSelect);
+  td.appendChild(categorySelect);
+  td.appendChild(exprSelect);
+  return td;
+}
+
+// ---- テーブル行 ----
 
 function addRow(
   code = "",
@@ -316,92 +389,11 @@ function addRow(
   const tdCode = document.createElement("td");
   tdCode.appendChild(makeCodeSelect(code));
 
-  const tdStart = document.createElement("td");
-  tdStart.className = "td-checkbox";
-  const startCheckbox = document.createElement("input");
-  startCheckbox.type = "checkbox";
-  startCheckbox.checked = start === true || start === "true";
-  startCheckbox.addEventListener("change", () => scheduleAutoSave());
-  tdStart.appendChild(startCheckbox);
-
-  const tdReset = document.createElement("td");
-  tdReset.className = "td-checkbox";
-  const resetCheckbox = document.createElement("input");
-  resetCheckbox.type = "checkbox";
-  resetCheckbox.checked = reset === true || reset === "true";
-  resetCheckbox.addEventListener("change", () => scheduleAutoSave());
-  tdReset.appendChild(resetCheckbox);
-
-  const tdShow = document.createElement("td");
-  tdShow.className = "td-checkbox";
-  const showCheckbox = document.createElement("input");
-  showCheckbox.type = "checkbox";
-  showCheckbox.checked = show === true || show === "true";
-  showCheckbox.addEventListener("change", () => scheduleAutoSave());
-  tdShow.appendChild(showCheckbox);
-
   const tdBg = document.createElement("td");
   tdBg.appendChild(makeBgSelect(bg));
 
   const tdBgm = document.createElement("td");
   tdBgm.appendChild(makeBgmSelect(bgm));
-
-  const tdExpression = document.createElement("td");
-  const effectiveExpressionChar = expressionChar || name;
-
-  var currentCategory = "";
-  var currentSubExpression = "";
-  if (expression) {
-    var slashIdx = expression.indexOf("/");
-    if (slashIdx !== -1) {
-      currentCategory = expression.slice(0, slashIdx);
-      currentSubExpression = expression.slice(slashIdx + 1);
-    } else {
-      currentCategory = expression;
-    }
-  }
-
-  const expressionCharSelect = makeExpressionCharSelect(expressionChar, name);
-  const expressionCategorySelect = makeExpressionCategorySelect(
-    effectiveExpressionChar,
-    currentCategory,
-  );
-  const expressionSelect = makeExpressionSelect(
-    effectiveExpressionChar,
-    currentCategory,
-    currentSubExpression,
-  );
-
-  expressionCharSelect.addEventListener("change", () => {
-    const selectedChar = expressionCharSelect.value;
-    fillExpressionCategoryOptions(expressionCategorySelect, selectedChar, "");
-    var categories = getExpressionCategories(selectedChar);
-    if (categories.includes("normal")) {
-      expressionCategorySelect.value = "normal";
-    }
-    fillExpressionSelectOptions(
-      expressionSelect,
-      selectedChar,
-      expressionCategorySelect.value,
-      "",
-    );
-    applyCharHighlight(expressionCharSelect, selectedChar);
-    scheduleAutoSave();
-  });
-  expressionCategorySelect.addEventListener("change", () => {
-    fillExpressionSelectOptions(
-      expressionSelect,
-      expressionCharSelect.value,
-      expressionCategorySelect.value,
-      "",
-    );
-    scheduleAutoSave();
-  });
-  expressionSelect.addEventListener("change", () => scheduleAutoSave());
-
-  tdExpression.appendChild(expressionCharSelect);
-  tdExpression.appendChild(expressionCategorySelect);
-  tdExpression.appendChild(expressionSelect);
 
   const tdName = document.createElement("td");
   tdName.className = "col-name";
@@ -424,12 +416,12 @@ function addRow(
   });
 
   tr.appendChild(tdCode);
-  tr.appendChild(tdStart);
-  tr.appendChild(tdReset);
-  tr.appendChild(tdShow);
+  tr.appendChild(makeTdCheckbox(start));
+  tr.appendChild(makeTdCheckbox(reset));
+  tr.appendChild(makeTdCheckbox(show));
   tr.appendChild(tdBg);
   tr.appendChild(tdBgm);
-  tr.appendChild(tdExpression);
+  tr.appendChild(makeTdExpression(expressionChar, expression, name));
   tr.appendChild(tdName);
   tr.appendChild(tdDialogue);
   tr.appendChild(tdCount);

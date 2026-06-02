@@ -120,77 +120,21 @@ function scheduleAutoSave() {
 async function autoSave() {
   if (!fileHandle) return;
 
+  const encode = window.CsvUtils.encodeInlineBreaks;
   const rows = Array.from(tableBody.querySelectorAll("tr")).map((tr) => {
-    const codeSelect = tr.querySelector("select.code-select");
-    const checkboxes = tr.querySelectorAll("input[type='checkbox']");
-    const bgSelect = tr.querySelector("select.bg-select");
-    const bgmSelect = tr.querySelector("select.bgm-select");
-    const expressionCharSelect = tr.querySelector(
-      "select.expression-char-select",
-    );
-    const expressionSelect = tr.querySelector("select.expression-select");
-    const textareas = tr.querySelectorAll("textarea");
-
-    const code = codeSelect
-      ? window.CsvUtils.encodeInlineBreaks(codeSelect.value.trim())
-      : "";
-    const start = checkboxes[0]
-      ? checkboxes[0].checked
-        ? "true"
-        : "false"
-      : "false";
-    const reset = checkboxes[1]
-      ? checkboxes[1].checked
-        ? "true"
-        : "false"
-      : "false";
-    const show = checkboxes[2]
-      ? checkboxes[2].checked
-        ? "true"
-        : "false"
-      : "false";
-    const bg = bgSelect
-      ? window.CsvUtils.encodeInlineBreaks(bgSelect.value.trim())
-      : "";
-    const bgm = bgmSelect
-      ? window.CsvUtils.encodeInlineBreaks(bgmSelect.value.trim())
-      : "";
-    const expressionChar = expressionCharSelect
-      ? window.CsvUtils.encodeInlineBreaks(expressionCharSelect.value.trim())
-      : "";
-    const expressionCategorySelect = tr.querySelector(
-      "select.expression-category-select",
-    );
-    const expressionCategory = expressionCategorySelect
-      ? expressionCategorySelect.value.trim()
-      : "";
-    const expressionSub = expressionSelect
-      ? expressionSelect.value.trim()
-      : "";
-    const expression =
-      expressionCategory && expressionSub
-        ? window.CsvUtils.encodeInlineBreaks(
-            expressionCategory + "/" + expressionSub,
-          )
-        : "";
-    const name = window.CsvUtils.encodeInlineBreaks(textareas[0].value.trim());
-    const dialogue = window.CsvUtils.encodeInlineBreaks(
-      textareas[1].value.trim(),
-    );
-
-    const parts = [
-      code,
-      start,
-      reset,
-      show,
-      bg,
-      bgm,
-      expressionChar,
-      expression,
-      name,
-      dialogue,
-    ];
-    return parts.join("・");
+    const d = readRowData(tr);
+    return [
+      encode(d.code),
+      d.start ? "true" : "false",
+      d.reset ? "true" : "false",
+      d.show ? "true" : "false",
+      encode(d.bg),
+      encode(d.bgm),
+      encode(d.expressionChar),
+      encode(d.expression),
+      encode(d.name),
+      encode(d.dialogue),
+    ].join("・");
   });
 
   const content = rows.join("\n") + "\n";
@@ -311,17 +255,20 @@ document
 
     // 立ち絵キャラが選択済みでカテゴリが空なら normal を自動選択
     rows.forEach((tr) => {
-      const charSelect = tr.querySelector("select.expression-char-select");
-      const catSelect = tr.querySelector("select.expression-category-select");
-      const exprSelect = tr.querySelector("select.expression-select");
-      if (!charSelect || !catSelect) return;
-      const selectedChar = charSelect.value.trim();
-      if (selectedChar && !catSelect.value) {
-        var categories = getExpressionCategories(selectedChar);
+      const els = getRowElements(tr);
+      if (!els.expressionCharSelect || !els.expressionCategorySelect) return;
+      const selectedChar = els.expressionCharSelect.value.trim();
+      if (selectedChar && !els.expressionCategorySelect.value) {
+        const categories = getExpressionCategories(selectedChar);
         if (categories.includes("normal")) {
-          catSelect.value = "normal";
-          if (exprSelect) {
-            fillExpressionSelectOptions(exprSelect, selectedChar, "normal", "");
+          els.expressionCategorySelect.value = "normal";
+          if (els.expressionSelect) {
+            fillExpressionSelectOptions(
+              els.expressionSelect,
+              selectedChar,
+              "normal",
+              "",
+            );
           }
           changed += 1;
         }
@@ -334,11 +281,9 @@ document
       window.AppConfig?.expressionTransitionIgnoreName || "";
     let prevExpressionChar = null;
     rows.forEach((tr, index) => {
-      const expressionCharSelect = tr.querySelector(
-        "select.expression-char-select",
-      );
-      if (!expressionCharSelect) return;
-      const currentChar = expressionCharSelect.value.trim();
+      const els = getRowElements(tr);
+      if (!els.expressionCharSelect) return;
+      const currentChar = els.expressionCharSelect.value.trim();
 
       if (index === 0) {
         prevExpressionChar = currentChar;
@@ -357,13 +302,12 @@ document
         prevExpressionChar &&
         currentChar !== prevExpressionChar
       ) {
-        const checkboxes = tr.querySelectorAll("input[type='checkbox']");
-        if (checkboxes[1] && !checkboxes[1].checked) {
-          checkboxes[1].checked = true;
+        if (els.checkboxes[1] && !els.checkboxes[1].checked) {
+          els.checkboxes[1].checked = true;
           changed += 1;
         }
-        if (checkboxes[2] && !checkboxes[2].checked) {
-          checkboxes[2].checked = true;
+        if (els.checkboxes[2] && !els.checkboxes[2].checked) {
+          els.checkboxes[2].checked = true;
           changed += 1;
         }
       }
