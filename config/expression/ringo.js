@@ -1,6 +1,6 @@
 window.CharacterExpressions = window.CharacterExpressions || {};
 window.CharacterExpressions.ringo = [
-  "special/special",
+  // "special/special",
   "low/angry_talk",
   "low/challenging_smile_talk",
   "low/concern",
