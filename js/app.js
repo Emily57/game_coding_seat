@@ -275,6 +275,27 @@ document
       }
     });
 
+    // セリフ内の文字列置換（config/dialogue-replace.js）
+    const replacements = window.DialogueReplacements || [];
+    if (replacements.length > 0) {
+      rows.forEach((tr) => {
+        const dialogueInput = tr.querySelectorAll("textarea")[1];
+        if (!dialogueInput) return;
+        let text = dialogueInput.value;
+        let replaced = false;
+        replacements.forEach((rule) => {
+          if (text.includes(rule.from)) {
+            text = text.split(rule.from).join(rule.to);
+            replaced = true;
+          }
+        });
+        if (replaced) {
+          dialogueInput.value = text;
+          changed += 1;
+        }
+      });
+    }
+
     // 立ち絵人物が変わった行のreset/showをtrueに
     // 指定キャラは演出上の例外として自動付与対象から除外する
     const transitionIgnoreName =

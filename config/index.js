@@ -3,6 +3,7 @@
   const files = [
     "tags.js",
     "name.js",
+    "dialogue-replace.js",
     "config.js",
     "expression/sanada.js",
     "expression/mito.js",
