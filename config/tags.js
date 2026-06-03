@@ -76,4 +76,8 @@ window.CodeTags = [
   '[sepia_start bg_key="xxx"]',
   "[sepia_end]",
   '[fadeoutbgm time="5000"]',
+  "[message_false]",
+  '[fadeoutbgm time="5000"][playse storage="walking_home.ogg" sprite_time="0000-2000"]',
+  '[playse storage="walking_home.ogg" sprite_time="0000-1500"][wait time="1000"]',
+  '[fadeoutbgm time="10"][playse storage="sword.ogg" sprite_time="0000-0500"]',
 ];
