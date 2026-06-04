@@ -52,7 +52,12 @@ function buildScenarioText() {
     const windowLine = d.dialogue ? `[${speaker.windowId}]\n` : "";
     const dialogueLine = d.dialogue ? formatDialogueText(d.dialogue) : "";
     const resetLine = d.reset ? "[chara_reset]\n" : "";
-    const codeLine = d.code ? `${d.code}\n` : "";
+    const codeHasXxx = d.code && d.code.includes('"xxx"');
+    const codeLine = d.code
+      ? codeHasXxx && d.bg
+        ? `${d.code.split('"xxx"').join(`"${d.bg}"`)}\n`
+        : `${d.code}\n`
+      : "";
 
     let expressionLine = "";
     if (d.expressionChar && d.expression) {
@@ -75,9 +80,10 @@ function buildScenarioText() {
         `${codeLine}${startLine}${resetLine}${expressionLine}${windowLine}${commentLine}${dialogueLine}`.trimEnd(),
       );
     } else {
-      const bgLine = d.bg
-        ? `[bg storage="background/${d.bg}.jpg"]\n`
-        : "";
+      const bgLine =
+        d.bg && !codeHasXxx
+          ? `[bg storage="background/${d.bg}.jpg"]\n`
+          : "";
       const bgmLine = d.bgm
         ? `[fadeinbgm storage="${d.bgm}.ogg" loop="true"]\n`
         : "";
