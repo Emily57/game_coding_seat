@@ -74,10 +74,12 @@ window.BgmList = [
 // テーブルの code プルダウンに表示されます
 window.CodeTags = [
   '[sepia_start bg_key="xxx"]',
-  "[sepia_end]",
+  '[sepia_end bg_key="xxx"]',
   '[fadeoutbgm time="5000"]',
   "[message_false]",
   '[fadeoutbgm time="5000"][playse storage="walking_home.ogg" sprite_time="0000-2000"]',
   '[playse storage="walking_home.ogg" sprite_time="0000-1500"][wait time="1000"]',
   '[fadeoutbgm time="10"][playse storage="sword.ogg" sprite_time="0000-0500"]',
+  '[shadow_start bg_key="xxx"]',
+  '[shadow_end bg_key="xxx"]',
 ];
