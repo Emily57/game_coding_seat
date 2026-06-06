@@ -281,6 +281,20 @@ document
       }
     });
 
+    // セリフの各行の先頭「- 」を除去
+    rows.forEach((tr) => {
+      const dialogueInput = tr.querySelectorAll("textarea")[1];
+      if (!dialogueInput) return;
+      const lines = dialogueInput.value.split("\n");
+      const stripped = lines.map((line) =>
+        line.trimStart().startsWith("- ") ? line.trimStart().slice(2) : line,
+      );
+      if (lines.some((l, i) => l !== stripped[i])) {
+        dialogueInput.value = stripped.join("\n");
+        changed += 1;
+      }
+    });
+
     // セリフ内の文字列置換（config/dialogue-replace.js）
     const replacements = window.DialogueReplacements || [];
     if (replacements.length > 0) {
