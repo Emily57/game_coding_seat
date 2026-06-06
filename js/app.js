@@ -241,11 +241,17 @@ document
     let changed = 0;
     const rows = Array.from(tableBody.querySelectorAll("tr"));
 
-    // 名前の一括変換
+    // 名前の先頭「- 」を除去してから一括変換
     rows.forEach((tr) => {
       const nameInput = tr.querySelector(".col-name textarea");
       if (!nameInput) return;
-      const currentName = nameInput.value.trim();
+      let currentName = nameInput.value.trim();
+      if (currentName.startsWith("- ")) {
+        currentName = currentName.slice(2).trim();
+        nameInput.value = currentName;
+        autoResize(nameInput);
+        changed += 1;
+      }
       const normalized = nameMap.get(currentName);
       if (!normalized || normalized === currentName) return;
       nameInput.value = normalized;
