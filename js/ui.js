@@ -39,7 +39,7 @@ function fillCodeSelectOptions(select, currentCode = "") {
   nullOption.textContent = "";
   select.appendChild(nullOption);
 
-  const tags = window.CodeTags || [];
+  const tags = (window.CodeTags || []).slice().sort();
   tags.forEach((tag) => {
     const option = document.createElement("option");
     option.value = tag;

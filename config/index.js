@@ -2,6 +2,7 @@
   const base = "./config/";
   const files = [
     "tags.js",
+    "code-tags.js",
     "name.js",
     "dialogue-replace.js",
     "config.js",

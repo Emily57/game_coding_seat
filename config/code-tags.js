@@ -1,0 +1,32 @@
+// ---- コードタグ候補 ----
+// テーブルの code プルダウンに表示されます
+// プルダウンではアルファベット順にソートされて表示されます
+window.CodeTags = [
+  '[bg_flash bg="xxx"]',
+  '[branch_2_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_2_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][s]',
+  '[branch_3_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_3_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][branch_3_3 storage="&f.current_scenario_storage" text="ううう" target="*uuu"][s]',
+  '[branch_4_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_4_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][branch_4_3 storage="&f.current_scenario_storage" text="ううう" target="*uuu"][branch_4_4 storage="&f.current_scenario_storage" text="えええ" target="*eee"][s]',
+  "[end_scenario]",
+  '[fadeoutbgm time="10"]',
+  '[fadeoutbgm time="10"][playse storage="sword.ogg" sprite_time="0000-0500"]',
+  '[fadeoutbgm time="5000"]',
+  '[fadeoutbgm time="5000"][playse storage="walking_home.ogg" sprite_time="0000-2000"]',
+  "[message_false]",
+  '[message_false][wait_s time="1000"]',
+  '[playse storage="collision.ogg"]',
+  '[playse storage="collision.ogg"][wait_s time="100"]',
+  '[playse storage="degree_get.ogg"]',
+  '[playse storage="door.ogg"]',
+  '[playse storage="fall_down.ogg"]',
+  '[playse storage="running.ogg" sprite_time="0000-1500"]',
+  '[playse storage="walking_home.ogg" sprite_time="0000-1500"][wait time="1000"]',
+  '[playse storage="walking_home.ogg" sprite_time="0000-2000"]',
+  '[quake_simple num="2"]',
+  '[quake_with_se ver="cymbal"][bg_flash bg="xxx"]',
+  '[quake_with_se ver="punch"]',
+  '[quake_with_se ver="small"]',
+  '[sepia_end bg_key="xxx"]',
+  '[sepia_start bg_key="xxx"]',
+  '[shadow_end bg_key="xxx"]',
+  '[shadow_start bg_key="xxx"]',
+];

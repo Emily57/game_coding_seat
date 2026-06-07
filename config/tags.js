@@ -70,34 +70,4 @@ window.BgmList = [
   "link_to_next",
 ];
 
-// ---- コードタグ候補 ----
-// テーブルの code プルダウンに表示されます
-window.CodeTags = [
-  '[sepia_start bg_key="xxx"]',
-  '[sepia_end bg_key="xxx"]',
-  '[fadeoutbgm time="5000"]',
-  '[fadeoutbgm time="10"]',
-  "[message_false]",
-  '[playse storage="walking_home.ogg" sprite_time="0000-2000"]',
-  '[fadeoutbgm time="5000"][playse storage="walking_home.ogg" sprite_time="0000-2000"]',
-  '[playse storage="walking_home.ogg" sprite_time="0000-1500"][wait time="1000"]',
-  '[fadeoutbgm time="10"][playse storage="sword.ogg" sprite_time="0000-0500"]',
-  '[shadow_start bg_key="xxx"]',
-  '[shadow_end bg_key="xxx"]',
-  '[branch_2_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_2_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][s]',
-  '[branch_3_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_3_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][branch_3_3 storage="&f.current_scenario_storage" text="ううう" target="*uuu"][s]',
-  '[branch_4_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_4_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][branch_4_3 storage="&f.current_scenario_storage" text="ううう" target="*uuu"][branch_4_4 storage="&f.current_scenario_storage" text="えええ" target="*eee"][s]',
-  '[quake_with_se ver="punch"]',
-  "[end_scenario]",
-  '[playse storage="door.ogg"]',
-  '[quake_with_se ver="small"]',
-  '[quake_simple num="2"]',
-  '[playse storage="degree_get.ogg"]',
-  '[playse storage="collision.ogg"]',
-  '[playse storage="collision.ogg"][wait_s time="100"]',
-  '[quake_with_se ver="cymbal"][bg_flash bg="xxx"]',
-  '[bg_flash bg="xxx"]',
-  '[playse storage="fall_down.ogg"]',
-  '[playse storage="running.ogg" sprite_time="0000-1500"]',
-  '[message_false][wait_s time="1000"]',
-];
+
