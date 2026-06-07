@@ -282,15 +282,22 @@ function getLineCounts(text) {
   return text.split(/\r?\n/).map((line) => line.length);
 }
 
-function renderLineCounts(target, text) {
+function renderLineCounts(target, text, dialogueTd) {
   const counts = getLineCounts(text);
   target.innerHTML = "";
+  let hasOver = false;
   counts.forEach((count) => {
     const div = document.createElement("div");
     div.textContent = String(count);
-    if (count > 26) div.classList.add("line-count-over");
+    if (count > 26) {
+      div.classList.add("line-count-over");
+      hasOver = true;
+    }
     target.appendChild(div);
   });
+  if (dialogueTd) {
+    dialogueTd.classList.toggle("dialogue-over", hasOver);
+  }
 }
 
 // ---- テーブル部品 ----
@@ -410,9 +417,9 @@ function addRow(
 
   const tdCount = document.createElement("td");
   tdCount.className = "line-count";
-  renderLineCounts(tdCount, dialogue);
+  renderLineCounts(tdCount, dialogue, tdDialogue);
   dialogueInput.addEventListener("input", () => {
-    renderLineCounts(tdCount, dialogueInput.value);
+    renderLineCounts(tdCount, dialogueInput.value, tdDialogue);
   });
 
   tr.appendChild(tdCode);
