@@ -4,4 +4,5 @@
 window.DialogueReplacements = [
   { from: "林檎", to: "[ringo]" },
   { from: "リンリン", to: "[rinrin]" },
+  { from: "味摘", to: "[mitsumi]" },
 ];
