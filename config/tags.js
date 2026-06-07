@@ -86,4 +86,8 @@ window.CodeTags = [
   '[branch_3_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_3_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][branch_3_3 storage="&f.current_scenario_storage" text="ううう" target="*uuu"][s]',
   '[branch_4_1 storage="&f.current_scenario_storage" text="あああ" target="*aaa"][branch_4_2 storage="&f.current_scenario_storage" text="いいい" target="*iii"][branch_4_3 storage="&f.current_scenario_storage" text="ううう" target="*uuu"][branch_4_4 storage="&f.current_scenario_storage" text="えええ" target="*eee"][s]',
   '[quake_with_se ver="punch"]',
+  "[end_scenario]",
+  '[playse storage="door.ogg"]',
+  '[quake_with_se ver="small"]',
+  '[quake_simple num="2"]',
 ];
