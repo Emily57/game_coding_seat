@@ -1,6 +1,5 @@
 window.CharacterExpressions = window.CharacterExpressions || {};
 window.CharacterExpressions.ringo = [
-  // "special/special",
   "low/angry_talk",
   "low/challenging_smile_talk",
   "low/concern",
@@ -13,8 +12,6 @@ window.CharacterExpressions.ringo = [
   "low/notice",
   "low/rage_panic_talk",
   "low/rage_talk",
-  "low/stunned_talk",
-  "low/stunned_worry_talk",
   "low/surprised_embarrassed_talk",
   "low/think",
   "low/thinking_talk",
@@ -33,7 +30,6 @@ window.CharacterExpressions.ringo = [
   "normal/dissatisfaction",
   "normal/embarrassed_talk",
   "normal/feel",
-  "normal/desperate_laughter",
   "normal/unrest_anxiety_talk",
   "normal/feel_talk",
   "normal/hit",
@@ -48,11 +44,16 @@ window.CharacterExpressions.ringo = [
   "normal/shine_talk",
   "normal/smile",
   "normal/smile_talk",
-  "normal/stunned",
   "normal/surprised",
   "normal/talk",
   "normal/troubled_smile_talk",
   "normal/unrest_talk",
   "normal/what",
   "normal/desperate_talk",
+  // 以下は使う機会が少ないので、タグからは外しているものです
+  // "special/special",
+  // "normal/stunned",
+  // "low/stunned_talk",
+  // "low/stunned_worry_talk",
+  // "normal/desperate_laughter",
 ];

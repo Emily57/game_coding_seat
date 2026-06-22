@@ -21,7 +21,7 @@ window.BgImages = [
   "reference_room",
   "entertainment_room",
   "school_warehouse",
-  "mito_execution",
+  // "mito_execution",
   "admin",
   "city",
   "school_gym",
@@ -32,6 +32,8 @@ window.BgImages = [
   "hospital",
   "hall_above",
   "hall",
+  "mito_roadside",
+  "darkening",
 ];
 
 // ---- BGM リスト ----
@@ -69,5 +71,3 @@ window.BgmList = [
   "unacceptable_ending",
   "link_to_next",
 ];
-
-
