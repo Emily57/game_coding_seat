@@ -241,11 +241,17 @@ document
     let changed = 0;
     const rows = Array.from(tableBody.querySelectorAll("tr"));
 
-    // 名前の一括変換
+    // 名前の先頭「- 」を除去してから一括変換
     rows.forEach((tr) => {
       const nameInput = tr.querySelector(".col-name textarea");
       if (!nameInput) return;
-      const currentName = nameInput.value.trim();
+      let currentName = nameInput.value.trim();
+      if (currentName.startsWith("- ")) {
+        currentName = currentName.slice(2).trim();
+        nameInput.value = currentName;
+        autoResize(nameInput);
+        changed += 1;
+      }
       const normalized = nameMap.get(currentName);
       if (!normalized || normalized === currentName) return;
       nameInput.value = normalized;
@@ -274,6 +280,41 @@ document
         }
       }
     });
+
+    // セリフの各行の先頭「- 」を除去
+    rows.forEach((tr) => {
+      const dialogueInput = tr.querySelectorAll("textarea")[1];
+      if (!dialogueInput) return;
+      const lines = dialogueInput.value.split("\n");
+      const stripped = lines.map((line) =>
+        line.trimStart().startsWith("- ") ? line.trimStart().slice(2) : line,
+      );
+      if (lines.some((l, i) => l !== stripped[i])) {
+        dialogueInput.value = stripped.join("\n");
+        changed += 1;
+      }
+    });
+
+    // セリフ内の文字列置換（config/dialogue-replace.js）
+    const replacements = window.DialogueReplacements || [];
+    if (replacements.length > 0) {
+      rows.forEach((tr) => {
+        const dialogueInput = tr.querySelectorAll("textarea")[1];
+        if (!dialogueInput) return;
+        let text = dialogueInput.value;
+        let replaced = false;
+        replacements.forEach((rule) => {
+          if (text.includes(rule.from)) {
+            text = text.split(rule.from).join(rule.to);
+            replaced = true;
+          }
+        });
+        if (replaced) {
+          dialogueInput.value = text;
+          changed += 1;
+        }
+      });
+    }
 
     // 立ち絵人物が変わった行のreset/showをtrueに
     // 指定キャラは演出上の例外として自動付与対象から除外する

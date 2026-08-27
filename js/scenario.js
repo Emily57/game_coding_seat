@@ -46,13 +46,16 @@ function buildScenarioText() {
       return;
 
     const speaker = resolveSpeakerWindow(d.name);
-    const commentLine = speaker.commentName
-      ? `# ${speaker.commentName}\n`
-      : "";
+    const commentLine = speaker.commentName ? `# ${speaker.commentName}\n` : "";
     const windowLine = d.dialogue ? `[${speaker.windowId}]\n` : "";
     const dialogueLine = d.dialogue ? formatDialogueText(d.dialogue) : "";
     const resetLine = d.reset ? "[chara_reset]\n" : "";
-    const codeLine = d.code ? `${d.code}\n` : "";
+    const codeHasXxx = d.code && d.code.includes('"xxx"');
+    const codeLine = d.code
+      ? codeHasXxx && d.bg
+        ? `${d.code.split('"xxx"').join(`"${d.bg}"`)}\n`
+        : `${d.code}\n`
+      : "";
 
     let expressionLine = "";
     if (d.expressionChar && d.expression) {
@@ -75,11 +78,12 @@ function buildScenarioText() {
         `${codeLine}${startLine}${resetLine}${expressionLine}${windowLine}${commentLine}${dialogueLine}`.trimEnd(),
       );
     } else {
-      const bgLine = d.bg
-        ? `[bg storage="background/${d.bg}.jpg"]\n`
-        : "";
+      const bgLine =
+        d.bg && !codeHasXxx
+          ? `[bg storage="background/${d.bg}.jpg" time="2000"]\n`
+          : "";
       const bgmLine = d.bgm
-        ? `[fadeinbgm storage="${d.bgm}.ogg" loop="true"]\n`
+        ? `[fadeinbgm storage="${d.bgm}.ogg" loop="true" time="2000"]\n`
         : "";
       blocks.push(
         `${codeLine}${bgLine}${bgmLine}${resetLine}${expressionLine}${windowLine}${commentLine}${dialogueLine}`.trimEnd(),

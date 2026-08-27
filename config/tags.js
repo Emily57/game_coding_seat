@@ -21,7 +21,7 @@ window.BgImages = [
   "reference_room",
   "entertainment_room",
   "school_warehouse",
-  "mito_execution",
+  // "mito_execution",
   "admin",
   "city",
   "school_gym",
@@ -32,6 +32,8 @@ window.BgImages = [
   "hospital",
   "hall_above",
   "hall",
+  "mito_roadside",
+  "darkening",
 ];
 
 // ---- BGM リスト ----
@@ -68,16 +70,4 @@ window.BgmList = [
   "showdown",
   "unacceptable_ending",
   "link_to_next",
-];
-
-// ---- コードタグ候補 ----
-// テーブルの code プルダウンに表示されます
-window.CodeTags = [
-  '[sepia_start bg_key="xxx"]',
-  "[sepia_end]",
-  '[fadeoutbgm time="5000"]',
-  "[message_false]",
-  '[fadeoutbgm time="5000"][playse storage="walking_home.ogg" sprite_time="0000-2000"]',
-  '[playse storage="walking_home.ogg" sprite_time="0000-1500"][wait time="1000"]',
-  '[fadeoutbgm time="10"][playse storage="sword.ogg" sprite_time="0000-0500"]',
 ];
